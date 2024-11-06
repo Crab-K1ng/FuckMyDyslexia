@@ -13,6 +13,7 @@ public class FuckMyDyslexia implements ModInitializer {
 
 	public static boolean reload = true;
 	public static boolean isCommand = false;
+	public static boolean openWithSlash = false;
 	public static ArrayList<String> suggestions = new ArrayList<String>();
 	public static ArrayList<String> commands = new ArrayList<String>();
 

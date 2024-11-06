@@ -3,11 +3,16 @@ package io.github.CrabK1ng.FuckMyDyslexia.mixins;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import finalforeach.cosmicreach.ClientSingletons;
+import finalforeach.cosmicreach.chat.Chat;
+import finalforeach.cosmicreach.chat.ChatMessage;
 import finalforeach.cosmicreach.gamestates.ChatMenu;
 import finalforeach.cosmicreach.gamestates.GameState;
+import finalforeach.cosmicreach.networking.client.ChatSender;
 import finalforeach.cosmicreach.ui.FontRenderer;
 import finalforeach.cosmicreach.ui.HorizontalAnchor;
 import finalforeach.cosmicreach.ui.VerticalAnchor;
+import io.github.CrabK1ng.FuckMyDyslexia.FuckMyDyslexia;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,6 +22,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static finalforeach.cosmicreach.gamestates.ChatMenu.minY;
 import static io.github.CrabK1ng.FuckMyDyslexia.FuckMyDyslexia.*;
@@ -88,7 +95,6 @@ public class ChatMenuMixin extends GameState {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/badlogic/gdx/graphics/g2d/SpriteBatch;end()V", shift = At.Shift.BEFORE))
     private void render(CallbackInfo ci) {
-
         if (isCommand){
             Iterator<String> iterator = suggestions.iterator();
 
@@ -139,5 +145,16 @@ public class ChatMenuMixin extends GameState {
     private void renderSwitchToGameState(CallbackInfo ci) {
         suggestions.clear();
         isCommand = false;
+    }
+
+    @Override
+    public void onSwitchTo() {
+        if (FuckMyDyslexia.openWithSlash){
+            FuckMyDyslexia.openWithSlash = false;
+            inputText = "/";
+            desiredCharIdx += 1;
+            suggestions.clear();
+            MakeSuggestions(inputText);
+        }
     }
 }

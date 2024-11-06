@@ -7,8 +7,9 @@
   ],
   "client": [
     "ChatMenuMixin",
+    "ChatSenderMixin",
     "InGameMixin",
-    "ChatSenderMixin"
+    "ControlsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
